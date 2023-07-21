@@ -19,7 +19,11 @@ function LoginForm() {
         const getHodData = localStorage.getItem("hodLoginData")
         const getStaffData = localStorage.getItem("staffLoginData")
         const { username, password } = loginData
-
+console.log();
+console.log();
+if (getHodData == null && getStaffData == null) {
+    alert("You should be registration first")
+}
         if (getHodData && getHodData.length || getStaffData && getStaffData.length) {
             const userData = JSON.parse(getHodData) || []
             const userStaffData = JSON.parse(getStaffData) || []
