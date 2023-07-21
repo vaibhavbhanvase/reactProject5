@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 function StaffHome() {
 
+    const getSignin = JSON.parse(localStorage.getItem("signin"))
 
     const [modal, setModal] = useState(false)
     const [data, setData] = useState(() => JSON.parse(localStorage.getItem("leaveData")) || [])
@@ -14,6 +15,10 @@ function StaffHome() {
         status: "Pending"
     })
 
+    if (getSignin) {
+        leaveData.name = `${getSignin.fname} ${getSignin.lname}`
+    }
+
     const handleChange = (e) => {
         const { name, value } = e.target
         setLeaveData((pre) => ({ ...pre, id: uuidv4(), [name]: value }))
@@ -21,13 +26,12 @@ function StaffHome() {
 
     const d = new Date(leaveData.fromDate)
     const d2 = new Date(leaveData.toDate)
-    const staffName = JSON.parse(localStorage.getItem("staffDetails"))
 
     if (d.getTime() && d2.getTime()) {
         const tdiff = d2.getTime() - d.getTime()
         const dDiff = tdiff / (1000 * 3600 * 24)
         leaveData.days = dDiff
-        
+
 
     }
     const handleSubmit = (e) => {
@@ -43,10 +47,17 @@ function StaffHome() {
 
     localStorage.setItem("leaveData", JSON.stringify(data) || [])
 
-    const aprovelnth = data?.filter((user) => {
+    const leaves = data?.filter((user) => {
+        if (`${getSignin.fname} ${getSignin.lname}` === user.name) {
+            return user
+        }
+    })
+
+    console.log(leaves);
+    const aprovelnth = leaves?.filter((user) => {
         return user.status === "Approved"
     })
-    const rejectedlnth = data?.filter((user) => {
+    const rejectedlnth = leaves?.filter((user) => {
         return user.status === "Rejected"
     })
 
@@ -68,14 +79,14 @@ function StaffHome() {
 
                     <form onSubmit={handleSubmit}>
                         <label>From <br />
-                            <input type="date" name='fromDate' value={leaveData.fromDate} onChange={handleChange} required/>
+                            <input type="date" name='fromDate' value={leaveData.fromDate} onChange={handleChange} required />
                         </label>
                         <label style={{ margin: "10px 0 30px 50px" }}>To <br />
-                            <input type="date" name='toDate' value={leaveData.toDate} onChange={handleChange} required/>
+                            <input type="date" name='toDate' value={leaveData.toDate} onChange={handleChange} required />
                         </label>
                         <br />
                         <label>Reason<br />
-                            <textarea rows='4' cols="42" name='reason' value={leaveData.reason} onChange={handleChange} required/>
+                            <textarea rows='4' cols="42" name='reason' value={leaveData.reason} onChange={handleChange} required />
                         </label>
                         <div className='d-flex flex-row-reverse mt-3 ' >
                             <div className='mx-2'><button className='btn btn-success' type='submit'>Submit</button></div>
@@ -87,13 +98,13 @@ function StaffHome() {
             </Modal>
 
         </div>
-            <div style={{margin:"80px 0 0 20px"}}>
-            <button type="button" class="btn btn-primary" onClick={() => setModal(true)}>Apply For Leave</button>
+            <div style={{ margin: "80px 0 0 20px" }}>
+                <button type="button" class="btn btn-primary" onClick={() => setModal(true)}>Apply For Leave</button>
             </div>
 
             <div className='d-flex justify-content-center'>
                 <div>
-                    <h1 className='text-center'>{data ? data.length : "0"}</h1>
+                    <h1 className='text-center'>{data ? leaves.length : "0"}</h1>
                     <p>Total Leaves</p>
                 </div>
                 <div className='px-5'>
@@ -106,18 +117,24 @@ function StaffHome() {
                 </div>
             </div>
             <hr />
-            <div className='d-flex container' >
-                {data?.map((info) => {
-                    return <div className="card col-sm-3 m-2" >
-                        <div className="card-body">
-                            <p>Leave for {info.fromDate} to {info.toDate}</p>
-                            <p>Number Of Days {info.days}</p>
-                            <p><strong>Reason:</strong><br /> {info.reason}</p>
-                            <p><strong>Status:</strong><br /> {info.status}</p>
+
+            {leaves.length === 0 ? <h1 className='text-danger text-center'>Not applied any leave yet</h1> :
+                <div className='container' style={{margin:" 0 auto"}}>
+                    <div className='row'>
+                            {leaves?.map((info) => {
+                                return <div className="card col-sm-3 m-3" >
+                                    <div className="card-body">
+                                        <p>Leave for {info.fromDate} to {info.toDate}</p>
+                                        <p>Number Of Days {info.days}</p>
+                                        <p><strong>Reason:</strong><br /> {info.reason}</p>
+                                        <p><strong>Status:</strong><br /> {info.status}</p>
+                                    </div>
+                                </div>
+
+                            })}
                         </div>
                     </div>
-                })}
-            </div>
+            }
         </>
     )
 }

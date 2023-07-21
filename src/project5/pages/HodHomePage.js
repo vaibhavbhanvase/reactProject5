@@ -37,23 +37,25 @@ function HodHomePage() {
 
   return (
     <>
-      <div className='d-flex ' style={{ margin: "90px 0 0" }}>
-        {data?.map((data, i) => {
-          return <div className="card col-3 mx-5" key={i}>
-            <div className="card-body">
-              <p>Leave for {data.fromDate} to {data.toDate}</p>
-              <p>Number Of Days {data.days}</p>
-              <p><strong>Reason:</strong> <br /> {data.reason}</p>
-              <p><strong>Status: </strong>{data.status}</p>
-
-              <div className='d-flex justify-content-around'>
-                <button type='submit' className='btn btn-danger px-4' onClick={() => handleReject(data)}>Reject</button>
-                <button type='submit' className='btn btn-success px-4' onClick={() => handleChange(data)}>Approve</button>
+      <div className='container' style={{ margin: " 0 auto" }}>
+        <div className='row'>
+          {data?.map((data, i) => {
+            return <div className="card col-sm-3 m-3" key={i}>
+              <div className="card-body">
+                <h3>{data.name}</h3>
+                <p>Leave for {data.fromDate} to {data.toDate}</p>
+                <p>Number Of Days {data.days}</p>
+                <p><strong>Reason:</strong> <br /> {data.reason}</p>
+                <p><strong>Status: </strong>{data.status}</p>
+                <div className='d-flex justify-content-around'>
+                  <button type='submit' className='btn btn-danger px-4' onClick={() => handleReject(data)}>Reject</button>
+                  <button type='submit' className='btn btn-success px-4' onClick={() => handleChange(data)}>Approve</button>
+                </div>
               </div>
-
             </div>
-          </div>
-        })}
+          })}
+
+        </div>
       </div>
     </>
   )
