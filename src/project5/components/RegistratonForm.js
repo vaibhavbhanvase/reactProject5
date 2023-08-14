@@ -30,11 +30,15 @@ function RegistratonForm() {
                 <div className='row'>
                     <div className='col-sm-6' style={{ margin: "50px auto 0" }}>
                         <div className='shadow p-3 mb-5 bg-white rounded'>
-                            <div style={{ marginBottom: "20px" }} name="contact">
+                            <div  name="contact" className='form-check d-flex'>
+                                <div style={{ marginRight: "20px" }} className='form-check'>
                                 <label htmlFor="hod">HOD</label>
-                                <input type="radio" name="contact" id="hod" value="hod" onClick={handleChange} />
-                                <label style={{ marginLeft: "20px" }} htmlFor="staff">Staff</label>
-                                <input type="radio" name="contact" id="staff" value="staff" onClick={handleChange} />
+                                <input className='form-check-input' type="radio" name="contact" id="hod" value="hod" onClick={handleChange} />
+                                </div>
+                                <div className='form-check'>
+                                    <label  htmlFor="staff">Staff</label>
+                                    <input className='form-check-input' type="radio" name="contact" id="staff" value="staff" onClick={handleChange} />
+                                </div>
                                 <br />
                             </div>
 

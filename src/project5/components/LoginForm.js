@@ -29,7 +29,7 @@ if (getHodData == null && getStaffData == null) {
             const userStaffData = JSON.parse(getStaffData) || []
 
             const userLogin = userData.filter((ele, i) => {
-                if (ele.username === username && ele.password === password) {
+                if (ele.username === username && ele.password === password && ele.role === "Hod") {
                     navigate("/dashboard/Hod")
                     localStorage.setItem("signin", JSON.stringify(ele))
                 }
@@ -37,7 +37,7 @@ if (getHodData == null && getStaffData == null) {
 
             })
             const userStaffLogin = userStaffData.filter((ele, i) => {
-                if (ele.username === username && ele.password === password) {
+                if (ele.username === username && ele.password === password && ele.role === "Staff") {
                     navigate("/dashboard/Staff")
                     localStorage.setItem("signin", JSON.stringify(ele))
                 }

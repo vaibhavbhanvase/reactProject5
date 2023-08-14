@@ -13,6 +13,8 @@ function NavBar() {
     localStorage.removeItem("signin")
     navigate("/login")
   }
+  const signin = JSON.parse(localStorage.getItem("signin"))
+  console.log(signin);
   return (
     <>
       <AppBar sx={{ backgroundColor: "lightcyan" }}>
@@ -21,8 +23,8 @@ function NavBar() {
             <>
               <Button onClick={() => navigate("/")}>Home</Button>
               <div style={{ marginLeft: "auto" }}>
-                <Button variant="contained" onClick={() => navigate("login")}>Login</Button>
-                <Button variant="contained" style={{ marginLeft: "15px" }} onClick={handleLogout}>Logout</Button>
+                
+               {signin?.role === "Hod" || signin?.role === "Staff" ?  <Button variant="contained" style={{ marginLeft: "15px" }} onClick={handleLogout}>Logout</Button> : <Button variant="contained" onClick={() => navigate("login")}>Login</Button>}
               </div>
             </>
           }

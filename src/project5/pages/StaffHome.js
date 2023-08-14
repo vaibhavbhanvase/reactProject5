@@ -43,6 +43,7 @@ function StaffHome() {
             reason: "",
             status: "Pending"
         })
+        setModal(false)
     }
 
     localStorage.setItem("leaveData", JSON.stringify(data) || [])

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { v4 as uuidv4 } from 'uuid';
 
 function StaffRegistration() {
 
@@ -42,6 +43,18 @@ function StaffRegistration() {
         setInput((pre) => ({ ...pre, [name]: value }))
 
     }
+
+    const userName = staffData.map((user)=>{
+        return user.username
+    })
+    const data = userName.find((data)=> data === input.username)
+
+    const hodData = JSON.parse(localStorage.getItem("hodLoginData"))
+    const hodUserName = hodData.map((user) => {
+        return user.username
+    })
+    const hData = hodUserName.find((data) => data === input.username)
+
     return (
         <>
             <div>
@@ -66,10 +79,11 @@ function StaffRegistration() {
                             <input className='form-control' onChange={handleChange} required name='phone' type='number' value={input.phone} />
                         </div>
                     </div>
-                    <div className='form-group' style={{ marginLeft: "50px" }}>
-                        <div > <label> Deparment </label></div>
-                        <select className='form-control' requireds name='deparment' onClick={handleChange} >
-                            <option selected>
+                    <div className='mb-4 mx-4'>
+                    <div className='form-group col-md-5'>
+                        <label> Deparment </label><br />
+                        <select className='form-control ' name='deparment' required onClick={handleChange} >
+                            <option selected >
                                 Select the Deparment
                             </option>
                             <option value='Accounting'>
@@ -87,10 +101,14 @@ function StaffRegistration() {
                         </select>
                     </div>
 
+                </div>
+
                     <div className='d-flex justify-content-around mb-4 mt-4'>
                         <div className='form-group'>
                             <label>Username</label><br />
                             <input className='form-control' onChange={handleChange} required name="username" type='text' value={input.username} />
+                        {(data === input.username || hData === input.username) && <div className='text-danger'>Username Already Exist</div>}
+
                         </div>
                         <div className='form-group'>
                             <label>Password</label><br />
@@ -102,7 +120,9 @@ function StaffRegistration() {
                             <button className='btn btn-primary' type='submit' style={{ width: "100%" }}>Register</button>
                         </div>
                     </div>
-
+                    <div className='mt-3 text-center'>
+                    <p>Already Registered? <NavLink to={"/login"}>Login</NavLink></p>
+                </div>
                 </form>
             </div>
         </>
